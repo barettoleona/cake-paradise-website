@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Account Authentication | Cakes of Paradise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,600&family=Poppins:wght@300;400;500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FFF8F5;
+    --light-pink: #FCECEF;
+    --primary-pink: #E96A8D;
+    --primary-pink-deep: #d85277;
+    --dark-brown: #5A2E2E;
+    --text-brown: #6F4E37;
+    --gold: #E3A34B;
+    --white: #FFFFFF;
+    --shadow-soft: 0 10px 30px rgba(90,46,46,0.08);
+    --shadow-hover: 0 18px 40px rgba(233,106,141,0.22);
+    --radius-lg: 28px;
+    --radius-md: 18px;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cg filter='drop-shadow(0px 2px 3px rgba(90,46,46,0.3))'%3E%3Ccircle cx='8' cy='8' r='3.2' fill='%23E96A8D' stroke='%235A2E2E' stroke-width='1.2'/%3E%3Ccircle cx='7' cy='7' r='1' fill='%23FFFFFF'/%3E%3Cpath d='M8 5 Q12 2 14 3' stroke='%235A2E2E' stroke-width='1.2' fill='none' stroke-linecap='round'/%3E%3Cpath d='M2 17 C1 13 4 10 11 10 C18 10 21 13 20 17 C19 18 17 19 11 19 C5 19 3 18 2 17 Z' fill='%23FFF0F5' stroke='%235A2E2E' stroke-width='1.2'/%3E%3Ccircle cx='6' cy='14' r='0.8' fill='%23E3A34B'/%3E%3Ccircle cx='11' cy='13' r='0.8' fill='%23E96A8D'/%3E%3Ccircle cx='16' cy='14.5' r='0.8' fill='%23E3A34B'/%3E%3Cpath d='M4 18 L6 26 C6.3 27.2 7.3 28 8.6 28 L13.4 28 C14.7 28 15.7 27.2 16 26 L18 18 Z' fill='%23E3A34B' stroke='%235A2E2E' stroke-width='1.2'/%3E%3Cline x1='8' y1='19' x2='9' y2='27' stroke='%23c98830' stroke-width='1'/%3E%3Cline x1='11' y1='19' x2='11' y2='27.5' stroke='%23c98830' stroke-width='1'/%3E%3Cline x1='14' y1='19' x2='13' y2='27' stroke='%23c98830' stroke-width='1'/%3E%3C/g%3E%3C/svg%3E") 8 5, auto !important;
+  }
+  a, button, input, select, textarea, .btn, .return-home-btn, .tab-btn, [role="button"], label {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cg filter='drop-shadow(0px 2px 4px rgba(233,106,141,0.5))'%3E%3Cpath d='M24 6 L25 9 L28 10 L25 11 L24 14 L23 11 L20 10 L23 9 Z' fill='%23E3A34B'/%3E%3Cpath d='M22 22 L22.8 24 L25 24.8 L22.8 25.6 L22 27.8 L21.2 25.6 L19 24.8 L21.2 24 Z' fill='%23E96A8D'/%3E%3Ccircle cx='8' cy='8' r='3.5' fill='%23FF4071' stroke='%235A2E2E' stroke-width='1.2'/%3E%3Ccircle cx='7' cy='7' r='1.2' fill='%23FFFFFF'/%3E%3Cpath d='M8 5 Q12 2 14 3' stroke='%235A2E2E' stroke-width='1.2' fill='none' stroke-linecap='round'/%3E%3Cpath d='M2 17 C1 13 4 10 11 10 C18 10 21 13 20 17 C19 18 17 19 11 19 C5 19 3 18 2 17 Z' fill='%23FCECEF' stroke='%235A2E2E' stroke-width='1.2'/%3E%3Ccircle cx='6' cy='14' r='0.9' fill='%23E96A8D'/%3E%3Ccircle cx='11' cy='13' r='0.9' fill='%23E3A34B'/%3E%3Ccircle cx='16' cy='14.5' r='0.9' fill='%23E96A8D'/%3E%3Cpath d='M4 18 L6 26 C6.3 27.2 7.3 28 8.6 28 L13.4 28 C14.7 28 15.7 27.2 16 26 L18 18 Z' fill='%23E3A34B' stroke='%235A2E2E' stroke-width='1.2'/%3E%3Cline x1='8' y1='19' x2='9' y2='27' stroke='%23c98830' stroke-width='1'/%3E%3Cline x1='11' y1='19' x2='11' y2='27.5' stroke='%23c98830' stroke-width='1'/%3E%3Cline x1='14' y1='19' x2='13' y2='27' stroke='%23c98830' stroke-width='1'/%3E%3C/g%3E%3C/svg%3E") 8 5, pointer !important;
+  }
+  .magical-sparkle-trail {
+    position: fixed;
+    pointer-events: none;
+    z-index: 99999;
+    user-select: none;
+    line-height: 1;
+    animation: sparkleFloat 0.65s cubic-bezier(0.2, 0.8, 0.4, 1) forwards;
+  }
+  @keyframes sparkleFloat {
+    0% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1.1) rotate(0deg);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(-50%, calc(-50% - 22px)) scale(0.25) rotate(35deg);
+    }
+  }
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: radial-gradient(circle at 85% 20%, var(--light-pink) 0%, var(--cream) 55%);
+    color: var(--text-brown);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    line-height: 1.6;
+  }
+
+  /* Header */
+  header {
+    background: rgba(255, 248, 245, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 24px rgba(90,46,46,0.06);
+    padding: 16px 6vw;
+  }
+  .nav-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo-text {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--dark-brown);
+  }
+  .logo-text span {
+    display: block;
+    font-family: 'Great Vibes', cursive;
+    color: var(--primary-pink);
+    font-size: 1.4rem;
+  }
+
+  /* Bubbly Pink Button Style (Used for buttons and Return to Home) */
+  .btn, .btn-primary, .return-home-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 13px 30px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    border: none;
+    background: linear-gradient(135deg, var(--primary-pink), var(--primary-pink-deep));
+    color: #fff;
+    box-shadow: 0 10px 24px rgba(233,106,141,0.35);
+    transition: all 0.35s ease;
+    font-family: 'Poppins', sans-serif;
+    text-decoration: none;
+  }
+  .btn:hover, .btn-primary:hover, .return-home-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 30px rgba(233,106,141,0.45);
+    color: #fff;
+  }
+
+  /* Auth Container */
+  .auth-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 20px;
+  }
+  .auth-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+    width: 100%;
+    max-width: 480px;
+    padding: 40px 36px;
+    position: relative;
+    border: 1px solid rgba(233,106,141,0.12);
+  }
+  .auth-card h2 {
+    font-family: 'Playfair Display', serif;
+    color: var(--dark-brown);
+    font-size: 1.9rem;
+    text-align: center;
+    margin-bottom: 6px;
+  }
+  .auth-subtitle {
+    text-align: center;
+    font-size: 0.88rem;
+    color: var(--text-brown);
+    opacity: 0.85;
+    margin-bottom: 26px;
+  }
+
+  /* Tab Navigation */
+  .tab-buttons {
+    display: flex;
+    background: var(--light-pink);
+    border-radius: 50px;
+    padding: 5px;
+    margin-bottom: 26px;
+  }
+  .tab-btn {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 10px 14px;
+    border-radius: 50px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--dark-brown);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .tab-btn.active {
+    background: var(--primary-pink);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(233,106,141,0.3);
+  }
+
+  /* Form Elements */
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 18px;
+    text-align: left;
+  }
+  label {
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: var(--dark-brown);
+  }
+  input {
+    border: 1.4px solid #f0d9de;
+    background: var(--cream);
+    border-radius: 14px;
+    padding: 12px 16px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.92rem;
+    color: var(--text-brown);
+    outline: none;
+    transition: border 0.3s;
+  }
+  input:focus {
+    border-color: var(--primary-pink);
+  }
+
+  .form-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 10px;
+  }
+
+  /* Feedback Alerts */
+  .alert {
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 0.86rem;
+    margin-bottom: 20px;
+    display: none;
+    line-height: 1.5;
+  }
+  .alert.success {
+    display: block;
+    background: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #c8e6c9;
+  }
+  .alert.danger {
+    display: block;
+    background: #ffebee;
+    color: #c62828;
+    border: 1px solid #ffcdd2;
+  }
+  .alert.info {
+    display: block;
+    background: #e3f2fd;
+    color: #1565c0;
+    border: 1px solid #bbdefb;
+  }
+
+  footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 0.82rem;
+    color: var(--text-brown);
+    opacity: 0.8;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-wrap">
+    <div class="logo-text">Cakes of Paradise <span>Handcrafted Cakes</span></div>
+    <!-- Return to Home in Header with Bubbly Pink Styling -->
+    <a href="index.html" class="return-home-btn" style="padding: 10px 22px; font-size: 0.88rem;">← Return to Home</a>
+  </div>
+</header>
+
+<div class="auth-wrapper">
+  <div class="auth-card">
+    
+    <div class="tab-buttons">
+      <button class="tab-btn active" id="loginTabBtn" onclick="switchTab('login')">Sign In</button>
+      <button class="tab-btn" id="registerTabBtn" onclick="switchTab('register')">Register</button>
+    </div>
+
+    <div id="alertBox" class="alert"></div>
+
+    <!-- Login Form -->
+    <form id="loginForm" onsubmit="handleLogin(event)">
+      <h2>Welcome Back</h2>
+      <p class="auth-subtitle">Please sign in to continue</p>
+
+      <div class="form-group">
+        <label for="loginEmail">Username or Email</label>
+        <input type="text" id="loginEmail" placeholder="admin or your email" required>
+      </div>
+
+      <div class="form-group">
+        <label for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" placeholder="••••••••" required>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary" id="loginSubmitBtn">Sign In</button>
+        <!-- Return to Home Link Styled as Bubbly Pink Button -->
+        <a href="index.html" class="return-home-btn">Return to Home</a>
+      </div>
+    </form>
+
+    <!-- Register Form -->
+    <form id="registerForm" onsubmit="handleRegister(event)" style="display:none;">
+      <h2>Create Account</h2>
+      <p class="auth-subtitle">Join Cakes of Paradise for handcrafted delights</p>
+
+      <!-- Optional Profile Picture Upload -->
+      <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:18px;">
+        <div id="regAvatarPreview" style="width:74px;height:74px;border-radius:50%;overflow:hidden;background:linear-gradient(135deg,#E96A8D,#d85277);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:700;box-shadow:0 6px 16px rgba(233,106,141,0.3);margin-bottom:8px;border:3px solid #FFF8F5;cursor:pointer;" onclick="document.getElementById('regAvatarFileInput').click()" title="Click to upload profile photo">
+          📷
+        </div>
+        <input type="file" id="regAvatarFileInput" accept="image/*" style="display:none;" onchange="handleRegAvatarUpload(event)">
+        <button type="button" onclick="document.getElementById('regAvatarFileInput').click()" style="background:none;border:none;color:#E96A8D;font-weight:600;font-size:0.82rem;cursor:pointer;text-decoration:underline;">Add Profile Photo (Optional)</button>
+      </div>
+
+      <div class="form-group">
+        <label for="registerName">Full Name</label>
+        <input type="text" id="registerName" placeholder="Daniel" required oninput="updateRegAvatarInitial()">
+      </div>
+
+      <div class="form-group">
+        <label for="registerEmail">Email Address</label>
+        <input type="email" id="registerEmail" placeholder="daniel@example.com" required>
+      </div>
+
+      <div class="form-group">
+        <label for="registerPhone">Phone Number <span style="font-weight:normal;color:#888;font-size:0.75rem;">(Optional)</span></label>
+        <input type="tel" id="registerPhone" placeholder="e.g. 7019994145">
+      </div>
+
+      <div class="form-group">
+        <label for="registerPassword">Password (min 6 characters)</label>
+        <input type="password" id="registerPassword" placeholder="••••••••" minlength="6" required>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary" id="registerSubmitBtn">Register</button>
+        <!-- Return to Home Link Styled as Bubbly Pink Button -->
+        <a href="index.html" class="return-home-btn">Return to Home</a>
+      </div>
+    </form>
+
+  </div>
+</div>
+
+<footer>
+  © 2026 Cakes of Paradise. Handcrafted with 🤎 in Surathkal.
+</footer>
+
+<script>
+  const API_BASE = 'http://localhost:5000/api';
+  let regAvatarBase64 = '';
+
+  function handleRegAvatarUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) {
+      showAlert('Please select an image smaller than 2MB', 'danger');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      regAvatarBase64 = e.target.result;
+      document.getElementById('regAvatarPreview').innerHTML = `<img src="${regAvatarBase64}" style="width:100%;height:100%;object-fit:cover;">`;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function updateRegAvatarInitial() {
+    if (!regAvatarBase64) {
+      const name = document.getElementById('registerName').value.trim();
+      document.getElementById('regAvatarPreview').innerHTML = name ? name.charAt(0).toUpperCase() : '📷';
+    }
+  }
+
+  function showAlert(message, type = 'info') {
+    const alertBox = document.getElementById('alertBox');
+    alertBox.textContent = message;
+    alertBox.className = `alert ${type}`;
+    alertBox.style.display = 'block';
+  }
+
+  function hideAlert() {
+    const alertBox = document.getElementById('alertBox');
+    alertBox.style.display = 'none';
+  }
+
+  function switchTab(tab) {
+    hideAlert();
+    const loginBtn = document.getElementById('loginTabBtn');
+    const regBtn = document.getElementById('registerTabBtn');
+    const loginForm = document.getElementById('loginForm');
+    const regForm = document.getElementById('registerForm');
+
+    if (tab === 'login') {
+      loginBtn.classList.add('active');
+      regBtn.classList.remove('active');
+      loginForm.style.display = 'block';
+      regForm.style.display = 'none';
+    } else {
+      regBtn.classList.add('active');
+      loginBtn.classList.remove('active');
+      regForm.style.display = 'block';
+      loginForm.style.display = 'none';
+    }
+  }
+
+  // Handle User Registration
+  async function handleRegister(e) {
+    e.preventDefault();
+    hideAlert();
+
+    const name = document.getElementById('registerName').value.trim();
+    const email = document.getElementById('registerEmail').value.trim();
+    const phone = document.getElementById('registerPhone').value.trim();
+    const password = document.getElementById('registerPassword').value;
+
+    const submitBtn = document.getElementById('registerSubmitBtn');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Registering...';
+
+    try {
+      const response = await fetch(`${API_BASE}/auth/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+          phone,
+          avatar: regAvatarBase64
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Registration failed');
+      }
+
+      // Save credentials in localStorage
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+
+      showAlert(`🎉 Account created successfully! Redirecting you to home...`, 'success');
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 1200);
+    } catch (err) {
+      showAlert(`❌ ${err.message}`, 'danger');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Register';
+    }
+  }
+
+  // Handle Login (Admin or Normal User)
+  async function handleLogin(e) {
+    e.preventDefault();
+    hideAlert();
+
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+
+    const submitBtn = document.getElementById('loginSubmitBtn');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Signing in...';
+
+    try {
+      const response = await fetch(`${API_BASE}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Invalid email/username or password');
+      }
+
+      // Save token and user details in localStorage
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+
+      showAlert(`✨ Welcome back, ${data.user.name}! Redirecting you to home...`, 'success');
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 1200);
+    } catch (err) {
+      showAlert(`❌ ${err.message}`, 'danger');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Sign In';
+    }
+  }
+
+  // Magical Bakery Cupcake & Sparkle Trail (Vector SVGs, No OS Text Emojis)
+  (function() {
+    const cupcakeSVG = `<svg viewBox="0 0 24 24" width="16" height="16" style="filter:drop-shadow(0 2px 4px rgba(233,106,141,0.3));"><circle cx="12" cy="5" r="2.4" fill="#E96A8D"/><path d="M12 3 Q14 1 16 2" stroke="#5A2E2E" stroke-width="0.8" fill="none"/><path d="M5 13 C4 10 7 7 12 7 C17 7 20 10 19 13 C18 14 16 15 12 15 C8 15 6 14 5 13 Z" fill="#FFF0F5" stroke="#E96A8D" stroke-width="0.8"/><circle cx="9" cy="11" r="0.7" fill="#E3A34B"/><circle cx="12" cy="10" r="0.7" fill="#E96A8D"/><circle cx="15" cy="11.5" r="0.7" fill="#E3A34B"/><path d="M6 14 L7.5 20 C7.8 21 8.5 21.5 9.5 21.5 L14.5 21.5 C15.5 21.5 16.2 21 16.5 20 L18 14 Z" fill="#E3A34B" stroke="#c98a33" stroke-width="0.8"/></svg>`;
+
+    const goldStarSVG = `<svg viewBox="0 0 24 24" width="13" height="13" style="filter:drop-shadow(0 1px 3px rgba(227,163,75,0.4));"><path d="M12 2 C12 7 17 12 22 12 C17 12 12 17 12 22 C12 17 7 12 2 12 C7 12 12 7 12 2 Z" fill="#E3A34B"/></svg>`;
+
+    const pinkStarSVG = `<svg viewBox="0 0 24 24" width="11" height="11" style="filter:drop-shadow(0 1px 3px rgba(233,106,141,0.4));"><path d="M12 2 C12 7 17 12 22 12 C17 12 12 17 12 22 C12 17 7 12 2 12 C7 12 12 7 12 2 Z" fill="#E96A8D"/></svg>`;
+
+    const particles = [cupcakeSVG, cupcakeSVG, goldStarSVG, pinkStarSVG];
+    let lastX = 0, lastY = 0;
+
+    window.addEventListener('mousemove', function(e) {
+      const dist = Math.hypot(e.clientX - lastX, e.clientY - lastY);
+      if (dist < 28) return;
+      lastX = e.clientX;
+      lastY = e.clientY;
+
+      const p = document.createElement('div');
+      p.className = 'magical-sparkle-trail';
+      p.innerHTML = particles[Math.floor(Math.random() * particles.length)];
+      p.style.left = (e.clientX + (Math.random() * 8 - 4)) + 'px';
+      p.style.top = (e.clientY + (Math.random() * 8 - 4)) + 'px';
+      document.body.appendChild(p);
+
+      setTimeout(() => p.remove(), 650);
+    });
+  })();
+</script>
+
+</body>
+</html>
